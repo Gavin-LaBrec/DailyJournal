@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SQLiteDatabase database = openOrCreateDatabase("Entries",MODE_PRIVATE,null);
+        SQLiteDatabase database = openOrCreateDatabase("Entries.db",MODE_PRIVATE,null);
 
 
         configureButtons();
