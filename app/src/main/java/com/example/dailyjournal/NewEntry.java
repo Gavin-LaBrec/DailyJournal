@@ -6,8 +6,10 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -59,7 +61,10 @@ public class NewEntry extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // ADD SAVING DATA TO DATABASE
+                TextView improveTextView = (TextView) findViewById(R.id.improveTextMultiLine);
+                String improveText = improveTextView.getText().toString();
+                TextView gratitudeTextView = (TextView) findViewById(R.id.GratitudeTextMultiLine);
+                String gratitudeText = gratitudeTextView.getText().toString();
                 finish();
             }
         });

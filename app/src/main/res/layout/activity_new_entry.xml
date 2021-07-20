@@ -33,7 +33,7 @@
         android:id="@+id/improveTextMultiLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="1dp"
         android:editable="true"
         android:ems="10"
         android:gravity="start|top"
@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/improveTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/improveTextView" />
 
     <EditText
         android:id="@+id/GratitudeTextMultiLine"
@@ -64,18 +64,18 @@
         android:layout_marginTop="405dp"
         android:text="What I'm Grateful for:"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/GratitudeTextMultiLine"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="100dp" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/improveTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="166dp"
+        android:layout_marginTop="176dp"
         android:text="How I Improved:"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="100dp" />
+        app:layout_constraintStart_toStartOf="@+id/improveTextMultiLine"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dateTextView"
