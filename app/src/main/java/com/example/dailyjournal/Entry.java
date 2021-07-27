@@ -1,10 +1,10 @@
 package com.example.dailyjournal;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Entry {
 
-    public Entry(LocalDate date, String improveText, String gratitudeText) {
+    public Entry(LocalDateTime date, String improveText, String gratitudeText) {
         this.date = date;
         this.improveText = improveText;
         this.gratitudeText = gratitudeText;
@@ -19,11 +19,11 @@ public class Entry {
                 '}';
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -43,7 +43,7 @@ public class Entry {
         this.gratitudeText = gratitudeText;
     }
 
-    private LocalDate date;
+    private LocalDateTime date;
     private String improveText;
     private String gratitudeText;
 }

@@ -28,6 +28,7 @@ public class NewEntry extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityNewEntryBinding binding;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +65,20 @@ public class NewEntry extends AppCompatActivity {
 
         Button finishButton = (Button) findViewById(R.id.finishButton);
         finishButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+                // Collect data for entry
+                LocalDateTime currentTime = LocalDateTime.now();
                 TextView improveTextView = (TextView) findViewById(R.id.improveTextMultiLine);
                 String improveText = improveTextView.getText().toString();
                 TextView gratitudeTextView = (TextView) findViewById(R.id.GratitudeTextMultiLine);
                 String gratitudeText = gratitudeTextView.getText().toString();
+
+                // Create and add entry to database
+                Entry newEntry = new Entry(currentTime, improveText, gratitudeText);
+                DatabaseHelper databaseHelper = new DatabaseHelper(NewEntry.this);
+                databaseHelper.addDatabaseEntry(newEntry);
                 finish();
             }
         });

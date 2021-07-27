@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        DatabaseHelper databaseHelper = new DatabaseHelper(MainActivity.this);
         SQLiteDatabase database = openOrCreateDatabase("Entries.db",MODE_PRIVATE,null);
 
 
@@ -33,4 +34,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }
