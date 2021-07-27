@@ -1,9 +1,11 @@
 package com.example.dailyjournal;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -17,6 +19,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.dailyjournal.databinding.ActivityNewEntryBinding;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class NewEntry extends AppCompatActivity {
 
@@ -34,7 +39,7 @@ public class NewEntry extends AppCompatActivity {
 //        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_new_entry);
 //        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
+        configureText();
         configureButtons();
     }
 
@@ -68,6 +73,19 @@ public class NewEntry extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    /**
+     * Initializes text on starting activity
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void configureText() {
+        // Display current date
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter DateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        CharSequence timeText = (CharSequence) currentTime.format(DateFormat);
+        TextView dateView = (TextView) findViewById(R.id.dateTextView);
+        dateView.setText(timeText);
     }
 
 }
