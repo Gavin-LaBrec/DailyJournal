@@ -14,6 +14,7 @@ import com.example.dailyjournal.databinding.ActivityNewEntryBinding;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class ReviewEntry extends AppCompatActivity {
 
@@ -85,6 +86,24 @@ public class ReviewEntry extends AppCompatActivity {
         CharSequence timeText = (CharSequence) currentTime.format(DateFormat);
         Button dateView = (Button) findViewById(R.id.dateButton);
         dateView.setText(timeText);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void configureText() {
+        // Set up TextViews
+        TextView improveTextView = (TextView) findViewById(R.id.improveTextMultiLine);
+        TextView gratitudeTextView = (TextView) findViewById(R.id.GratitudeTextMultiLine);
+
+        // ONLY GETS CURRENT DATE!!!
+        // MUST BE CHANGED TO LAST DATE OF ENTRIES!!!
+        LocalDateTime currentDate = LocalDateTime.now();
+        DatabaseHelper databaseHelper = new DatabaseHelper(ReviewEntry.this);
+        Entry lastEntry = databaseHelper.getEntry(currentDate);
+        String lastImprove = lastEntry.getImproveText();
+        String lastGratitude = lastEntry.getGratitudeText();
+
+        improveTextView.setText(lastImprove);
+        gratitudeTextView.setText(lastGratitude);
     }
 
 }

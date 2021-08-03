@@ -2,6 +2,7 @@ package com.example.dailyjournal;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.os.Build;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -49,17 +51,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Adds journal entry to the database.
+     *
+     * @param entry journal entry to save to database
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public boolean addDatabaseEntry(Entry Entry) {
+    public boolean addDatabaseEntry(Entry entry) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         DateTimeFormatter DatabaseFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String dateString = Entry.getDate().format(DatabaseFormat).toString();
+        String dateString = entry.getDate().format(DatabaseFormat).toString();
         cv.put(COLUMN_DATE_CREATED, dateString);
 
-        cv.put(COLUMN_IMPROVEMENT, Entry.getImproveText());
-        cv.put(COLUMN_GRATITUDE, Entry.getGratitudeText());
+        cv.put(COLUMN_IMPROVEMENT, entry.getImproveText());
+        cv.put(COLUMN_GRATITUDE, entry.getGratitudeText());
 
         long insert = db.insert(ENTRIES_TABLE, null, cv);
         if (insert == -1) {
@@ -68,4 +75,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+
+    /**
+     * Gets journal entry from the database given the entry's date.
+     *
+     * @param date date of journal entry to find in database
+     *
+     * @return entry journal entry found in database
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Entry getEntry(LocalDateTime date) {
+        DateTimeFormatter DatabaseFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String queryDate = date.format(DatabaseFormat);
+        String queryString = "SELECT " + COLUMN_DATE_CREATED + " FROM " + ENTRIES_TABLE + "WHERE "
+                                       + ENTRIES_TABLE + " = " + queryDate;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+        String improveText = cursor.getString(1);
+        String gratitudeText = cursor.getString(2);
+//        if (cursor.moveToFirst()) {
+//            while(cursor.moveToNext()) {
+//
+//            }
+//        } else {
+//            // Add displaying error message
+//        }
+        Entry entry = new Entry(date, improveText, gratitudeText);
+        cursor.close();
+        db.close();
+        return entry;
+    }
+
+
 }

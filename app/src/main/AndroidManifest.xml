@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.dailyjournal">
 
     <application
@@ -13,8 +14,10 @@
         <activity
             android:name="com.example.com.github.gavinlabrec.dailyjournal.NewEntry"
             android:label="@string/title_activity_new_entry"
-            android:theme="@style/Theme.DailyJournal.NoActionBar" />
-        <activity android:name="com.example.com.github.gavinlabrec.dailyjournal.MainActivity">
+            android:theme="@style/Theme.DailyJournal.NoActionBar"
+            tools:ignore="MissingClass" />
+        <activity android:name="com.example.com.github.gavinlabrec.dailyjournal.MainActivity"
+            tools:ignore="MissingClass">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
