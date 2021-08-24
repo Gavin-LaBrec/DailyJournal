@@ -63,14 +63,19 @@ public class NewEntry extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Collect data for entry
-                LocalDateTime currentTime = LocalDateTime.now();
+                LocalDateTime currentDate = LocalDateTime.now();
+                int month = currentDate.getMonthValue();
+                int day = currentDate.getDayOfMonth();
+                int year = currentDate.getYear();
+                String date = month + "/" + day + "/" + year;
+
                 TextView improveTextView = (TextView) findViewById(R.id.improveTextMultiLine);
                 String improveText = improveTextView.getText().toString();
                 TextView gratitudeTextView = (TextView) findViewById(R.id.GratitudeTextMultiLine);
                 String gratitudeText = gratitudeTextView.getText().toString();
 
                 // Create and add entry to database
-                Entry newEntry = new Entry(currentTime, improveText, gratitudeText);
+                Entry newEntry = new Entry(date, improveText, gratitudeText);
                 DatabaseHelper databaseHelper = new DatabaseHelper(NewEntry.this);
                 databaseHelper.addDatabaseEntry(newEntry);
                 finish();

@@ -51,22 +51,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    /**
-     * Adds journal entry to the database.
-     *
-     * @param entry journal entry to save to database
-     */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public boolean addDatabaseEntry(Entry entry) {
+    public boolean addDatabaseEntry(Entry Entry) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        DateTimeFormatter DatabaseFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String dateString = entry.getDate().format(DatabaseFormat).toString();
-        cv.put(COLUMN_DATE_CREATED, dateString);
+        cv.put(COLUMN_DATE_CREATED, Entry.getDate());
 
-        cv.put(COLUMN_IMPROVEMENT, entry.getImproveText());
-        cv.put(COLUMN_GRATITUDE, entry.getGratitudeText());
+        cv.put(COLUMN_IMPROVEMENT, Entry.getImproveText());
+        cv.put(COLUMN_GRATITUDE, Entry.getGratitudeText());
 
         long insert = db.insert(ENTRIES_TABLE, null, cv);
         if (insert == -1) {
@@ -84,11 +77,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return entry journal entry found in database
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Entry getEntry(LocalDateTime date) {
-        DateTimeFormatter DatabaseFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String queryDate = date.format(DatabaseFormat);
-        String queryString = "SELECT " + COLUMN_DATE_CREATED + " FROM " + ENTRIES_TABLE + "WHERE "
-                                       + ENTRIES_TABLE + " = " + queryDate;
+    public Entry getEntry(String queryDate) {
+
+        String queryString = "SELECT " + COLUMN_DATE_CREATED + " FROM " + ENTRIES_TABLE + " WHERE "
+                + COLUMN_DATE_CREATED + " = " + queryDate;
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -102,11 +94,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        } else {
 //            // Add displaying error message
 //        }
-        Entry entry = new Entry(date, improveText, gratitudeText);
+        Entry entry = new Entry(queryDate, improveText, gratitudeText);
         cursor.close();
         db.close();
         return entry;
     }
-
-
 }

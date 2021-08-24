@@ -33,6 +33,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, NewEntry.class));
             }
         });
+
+        Button reviewButton = (Button) findViewById(R.id.reviewButton);
+        newEntryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ReviewEntry.class));
+            }
+        });
     }
 
 }
