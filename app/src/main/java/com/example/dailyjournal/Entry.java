@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Entry {
 
-    public Entry(LocalDateTime date, String improveText, String gratitudeText) {
+    public Entry(String date, String improveText, String gratitudeText) {
         this.date = date;
         this.improveText = improveText;
         this.gratitudeText = gratitudeText;
@@ -19,11 +19,11 @@ public class Entry {
                 '}';
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -43,7 +43,7 @@ public class Entry {
         this.gratitudeText = gratitudeText;
     }
 
-    private LocalDateTime date;
+    private String date;
     private String improveText;
     private String gratitudeText;
 }

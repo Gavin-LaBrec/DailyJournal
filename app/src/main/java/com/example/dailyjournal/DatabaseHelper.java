@@ -2,6 +2,7 @@ package com.example.dailyjournal;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.os.Build;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -54,9 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        DateTimeFormatter DatabaseFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String dateString = Entry.getDate().format(DatabaseFormat).toString();
-        cv.put(COLUMN_DATE_CREATED, dateString);
+        cv.put(COLUMN_DATE_CREATED, Entry.getDate());
 
         cv.put(COLUMN_IMPROVEMENT, Entry.getImproveText());
         cv.put(COLUMN_GRATITUDE, Entry.getGratitudeText());
@@ -67,5 +67,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
+
+    /**
+     * Gets journal entry from the database given the entry's date.
+     *
+     * @param date date of journal entry to find in database
+     *
+     * @return entry journal entry found in database
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Entry getEntry(String queryDate) {
+
+        String queryString = "SELECT " + COLUMN_DATE_CREATED + " FROM " + ENTRIES_TABLE + " WHERE "
+                + COLUMN_DATE_CREATED + " = " + queryDate;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+        String improveText = cursor.getString(1);
+        String gratitudeText = cursor.getString(2);
+//        if (cursor.moveToFirst()) {
+//            while(cursor.moveToNext()) {
+//
+//            }
+//        } else {
+//            // Add displaying error message
+//        }
+        Entry entry = new Entry(queryDate, improveText, gratitudeText);
+        cursor.close();
+        db.close();
+        return entry;
     }
 }

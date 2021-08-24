@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DailyJournal">
         <activity
+            android:name=".ReviewEntry"
+            android:label="@string/title_activity_review_entry"
+            android:theme="@style/Theme.DailyJournal.NoActionBar"></activity>
+        <activity
             android:name=".NewEntry"
             android:label="@string/title_activity_new_entry"
-            android:theme="@style/Theme.DailyJournal.NoActionBar"></activity>
+            android:theme="@style/Theme.DailyJournal.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
