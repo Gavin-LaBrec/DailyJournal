@@ -71,7 +71,7 @@ public class NewEntry extends AppCompatActivity {
 
                 TextView improveTextView = (TextView) findViewById(R.id.improveTextMultiLine);
                 String improveText = improveTextView.getText().toString();
-                TextView gratitudeTextView = (TextView) findViewById(R.id.GratitudeTextMultiLine);
+                TextView gratitudeTextView = (TextView) findViewById(R.id.gratitudeTextMultiLine);
                 String gratitudeText = gratitudeTextView.getText().toString();
 
                 // Create and add entry to database
