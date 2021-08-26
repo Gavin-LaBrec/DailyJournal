@@ -97,6 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        } else {
 //            // Add displaying error message, toast and cancel
 //        }
+
         Entry entry = new Entry(queryDate, improveText, gratitudeText);
         cursor.close();
         db.close();
