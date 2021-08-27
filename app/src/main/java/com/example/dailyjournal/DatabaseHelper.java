@@ -103,4 +103,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return entry;
     }
+
+    /**
+     * Formats the given date to match the database
+     *  formatted
+     * @param date date to format
+     *
+     * @return date in database format
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String formatDate(LocalDateTime date) {
+        int month = date.getMonthValue();
+        int day = date.getDayOfMonth();
+        int year = date.getYear();
+        String formattedDate = month + "/" + day + "/" + year;
+        return formattedDate;
+    }
 }

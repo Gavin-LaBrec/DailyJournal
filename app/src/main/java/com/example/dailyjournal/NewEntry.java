@@ -30,20 +30,9 @@ public class NewEntry extends AppCompatActivity {
         binding = ActivityNewEntryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_new_entry);
-//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         configureText();
         configureButtons();
     }
-
-//    @Override
-//    public boolean onSupportNavigateUp() {
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_new_entry);
-//        return NavigationUI.navigateUp(navController, appBarConfiguration)
-//                || super.onSupportNavigateUp();
-//    }
 
     /**
      * Initializes buttons on starting activity
@@ -63,11 +52,7 @@ public class NewEntry extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Collect data for entry
-                LocalDateTime currentDate = LocalDateTime.now();
-                int month = currentDate.getMonthValue();
-                int day = currentDate.getDayOfMonth();
-                int year = currentDate.getYear();
-                String date = month + "/" + day + "/" + year;
+                String date = DatabaseHelper.formatDate(LocalDateTime.now());
 
                 TextView improveTextView = (TextView) findViewById(R.id.improveTextMultiLine);
                 String improveText = improveTextView.getText().toString();
@@ -89,11 +74,9 @@ public class NewEntry extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void configureText() {
         // Display current date
-        LocalDateTime currentTime = LocalDateTime.now();
-        DateTimeFormatter DateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        CharSequence timeText = (CharSequence) currentTime.format(DateFormat);
+        String currentDate = DatabaseHelper.formatDate(LocalDateTime.now());
         TextView dateView = (TextView) findViewById(R.id.dateTextView);
-        dateView.setText(timeText);
+        dateView.setText(currentDate);
     }
 
 

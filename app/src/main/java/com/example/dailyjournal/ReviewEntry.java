@@ -44,11 +44,7 @@ public class ReviewEntry extends AppCompatActivity {
 
         // ONLY GETS CURRENT DATE!!!
         // MUST BE CHANGED TO LAST DATE OF ENTRIES!!!
-        LocalDateTime currentDate = LocalDateTime.now();
-        int month = currentDate.getMonthValue();
-        int day = currentDate.getDayOfMonth();
-        int year = currentDate.getYear();
-        String date = month + "/" + day + "/" + year;
+        String date = DatabaseHelper.formatDate(LocalDateTime.now());
 
         DatabaseHelper databaseHelper = new DatabaseHelper(ReviewEntry.this);
         Entry lastEntry = databaseHelper.getEntry(date);
