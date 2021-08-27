@@ -3,20 +3,14 @@ package com.example.dailyjournal;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.dailyjournal.databinding.ActivityNewEntryBinding;
 
@@ -63,7 +57,7 @@ public class NewEntry extends AppCompatActivity {
             }
         });
 
-        Button finishButton = (Button) findViewById(R.id.finishButton);
+        Button finishButton = (Button) findViewById(R.id.editButton);
         finishButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -77,7 +71,7 @@ public class NewEntry extends AppCompatActivity {
 
                 TextView improveTextView = (TextView) findViewById(R.id.improveTextMultiLine);
                 String improveText = improveTextView.getText().toString();
-                TextView gratitudeTextView = (TextView) findViewById(R.id.GratitudeTextMultiLine);
+                TextView gratitudeTextView = (TextView) findViewById(R.id.gratitudeTextMultiLine);
                 String gratitudeText = gratitudeTextView.getText().toString();
 
                 // Create and add entry to database
@@ -101,5 +95,6 @@ public class NewEntry extends AppCompatActivity {
         TextView dateView = (TextView) findViewById(R.id.dateTextView);
         dateView.setText(timeText);
     }
+
 
 }

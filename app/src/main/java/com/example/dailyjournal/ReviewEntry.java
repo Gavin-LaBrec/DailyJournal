@@ -3,23 +3,16 @@ package com.example.dailyjournal;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
 import android.widget.TextView;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.dailyjournal.databinding.ActivityReviewEntryBinding;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class ReviewEntry extends AppCompatActivity {
 
@@ -43,8 +36,8 @@ public class ReviewEntry extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void configureText() {
         // Set up TextViews
-        TextView improveTextView = (TextView) findViewById(R.id.improveTextMultiLine);
-        TextView gratitudeTextView = (TextView) findViewById(R.id.GratitudeTextMultiLine);
+        TextView improveTextView = findViewById(R.id.improveTextMultiLine);
+        TextView gratitudeTextView = findViewById(R.id.gratitudeTextMultiLine);
 
         // ONLY GETS CURRENT DATE!!!
         // MUST BE CHANGED TO LAST DATE OF ENTRIES!!!
