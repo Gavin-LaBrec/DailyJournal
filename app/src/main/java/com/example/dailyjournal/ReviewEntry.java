@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.navigation.ui.AppBarConfiguration;
@@ -28,6 +30,7 @@ public class ReviewEntry extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         configureText();
+        configureButtons();
     }
 
     /**
@@ -54,5 +57,18 @@ public class ReviewEntry extends AppCompatActivity {
 
         improveTextView.setText(lastImprove);
         gratitudeTextView.setText(lastGratitude);
+    }
+
+    /**
+     * Initializes buttons on starting activity
+     */
+    private void configureButtons() {
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }
