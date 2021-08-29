@@ -78,30 +78,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return entry journal entry found in database
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Entry getEntry(String queryDate) {
+    public Entry getEntry(String queryDate) throws Exception {
 
-        String queryString = "SELECT " + COLUMN_DATE_CREATED + ", " + COLUMN_IMPROVEMENT + ", " + COLUMN_GRATITUDE + " FROM " + ENTRIES_TABLE +  " WHERE "
+        String queryString = "SELECT " + COLUMN_DATE_CREATED + ", " + COLUMN_IMPROVEMENT + ", " + COLUMN_GRATITUDE + " FROM " + ENTRIES_TABLE + " WHERE "
                 + COLUMN_DATE_CREATED + "='" + queryDate + "'";
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(queryString, null);
 
+        // Test if database has entries
+        if (!(cursor.moveToFirst())) {
+            throw new Exception();
+        }
 
-        cursor.moveToFirst();
         String improveText = cursor.getString(1);
         String gratitudeText = cursor.getString(2);
-//        if (cursor.moveToFirst()) {
-//
-//            }
-//        } else {
-//            // Add displaying error message, toast and cancel
-//        }
-
         Entry entry = new Entry(queryDate, improveText, gratitudeText);
         cursor.close();
         db.close();
         return entry;
+    }
+
+    /**
+     * Finds the most recent date of an entry in the database
+     *
+     * @return most recent date in database
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public  String getRecentDate() {
+        String queryString = "SELECT " + COLUMN_DATE_CREATED + " FROM "
+                + ENTRIES_TABLE + " ORDER BY ID DESC LIMIT 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        cursor.moveToFirst();
+        String recentDate = cursor.getString(0);
+        return recentDate;
+    }
+
+    /**
+     * Gets the databases containing the entries
+     *
+     * @return the database
+     */
+    public SQLiteDatabase getDatabase() {
+        return (this.getReadableDatabase());
     }
 
     /**
@@ -119,4 +140,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String formattedDate = month + "/" + day + "/" + year;
         return formattedDate;
     }
+
 }
