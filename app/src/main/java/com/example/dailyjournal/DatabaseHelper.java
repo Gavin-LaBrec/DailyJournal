@@ -71,7 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             // Rename duplicate entry date
             if (!(dateDuplicates == 0)) {
-                String entryDateDuplicate = entryDate + "(" + dateDuplicates + ")";
+                String entryDateDuplicate = entryDate + " (" + dateDuplicates + ")";
                 Entry.setDate(entryDateDuplicate);
             }
         }
@@ -171,13 +171,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return TreeSet of dates of entries in chronological order
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public  TreeSet<String> getDates() {
+    public TreeSet<String> getDates() {
         return dates;
     }
 
     /**
      * Formats the given date to match the database
-     *  formatted
+     *
      * @param date date to format
      *
      * @return date in database format
@@ -191,5 +191,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return formattedDate;
     }
 
+    /**
+     * Checks and formats any duplicate dates into ones to display
+     *
+     * @return date in ready to display format
+     */
+    public String getDateText(String date) {
+        String formattedDate = date;
+        if (date.contains("(")) {
+            Character splitPoint = '6';
+            String split = String.valueOf(splitPoint);
+            String splitDate[] = date.split(" ");
+            formattedDate = splitDate[0];
+        }
+        return formattedDate;
+    }
     private TreeSet<String> dates;
 }

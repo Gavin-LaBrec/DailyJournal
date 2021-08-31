@@ -57,7 +57,8 @@ public class ReviewEntry extends AppCompatActivity {
 
         DatabaseHelper databaseHelper = new DatabaseHelper(ReviewEntry.this);
         String date = databaseHelper.getRecentDate();
-        dateTextView.setText(date);
+        String formattedDate = databaseHelper.getDateText(date);
+        dateTextView.setText(formattedDate);
 
         try {
             Entry lastEntry = databaseHelper.getEntry(date);
