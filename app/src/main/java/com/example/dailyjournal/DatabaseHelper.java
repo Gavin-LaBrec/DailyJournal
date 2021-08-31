@@ -13,6 +13,8 @@ import androidx.annotation.RequiresApi;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ENTRIES_TABLE = "ENTRIES_TABLE";
@@ -33,8 +35,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *                {@link #onUpgrade} will be used to upgrade the database; if the database is
      *                newer, {@link #onDowngrade} will be used to downgrade the database
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public DatabaseHelper(@Nullable Context context) {
         super(context, "Entries.db", null, 1);
+        dates = this.getDateSet();
     }
 
     @Override
@@ -54,6 +58,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public boolean addDatabaseEntry(Entry Entry) {
+        if (dates.contains(Entry.getDate())) {
+            // Check for entries with the same date
+            String entryDate = Entry.getDate();
+            int dateDuplicates = 0;
+            Iterator dateIterator = dates.iterator();
+            while (dateIterator.hasNext()) {
+                String dateName = (String) dateIterator.next();
+                if (dateName.contains(entryDate)) {
+                    dateDuplicates++;
+                }
+            }
+            // Rename duplicate entry date
+            if (!(dateDuplicates == 0)) {
+                String entryDateDuplicate = entryDate + "(" + dateDuplicates + ")";
+                Entry.setDate(entryDateDuplicate);
+            }
+        }
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -79,7 +101,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Entry getEntry(String queryDate) throws Exception {
-
         String queryString = "SELECT " + COLUMN_DATE_CREATED + ", " + COLUMN_IMPROVEMENT + ", " + COLUMN_GRATITUDE + " FROM " + ENTRIES_TABLE + " WHERE "
                 + COLUMN_DATE_CREATED + "='" + queryDate + "'";
 
@@ -126,6 +147,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Chronologically sorts dates of entries into hash set
+     *
+     * @return dates of entries
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public TreeSet getDateSet() {
+        TreeSet<String> dates = new TreeSet<>();
+        String queryString = "SELECT " + COLUMN_DATE_CREATED + " FROM " + ENTRIES_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            String nextDate = cursor.getString(0);
+            dates.add(nextDate);
+        }
+        return dates;
+    }
+
+    /**
+     * Accessor for dates of entries in database
+     *
+     * @return TreeSet of dates of entries in chronological order
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public  TreeSet<String> getDates() {
+        return dates;
+    }
+
+    /**
      * Formats the given date to match the database
      *  formatted
      * @param date date to format
@@ -141,4 +191,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return formattedDate;
     }
 
+    private TreeSet<String> dates;
 }

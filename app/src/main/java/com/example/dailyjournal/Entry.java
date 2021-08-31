@@ -1,9 +1,15 @@
 package com.example.dailyjournal;
 
+import android.app.Activity;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.time.LocalDateTime;
 
 public class Entry {
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Entry(String date, String improveText, String gratitudeText) {
         this.date = date;
         this.improveText = improveText;
@@ -19,7 +25,7 @@ public class Entry {
                 '}';
     }
 
-    public String getDate() {
+    public static String getDate() {
         return date;
     }
 
@@ -43,7 +49,7 @@ public class Entry {
         this.gratitudeText = gratitudeText;
     }
 
-    private String date;
+    private static String date;
     private String improveText;
     private String gratitudeText;
 }

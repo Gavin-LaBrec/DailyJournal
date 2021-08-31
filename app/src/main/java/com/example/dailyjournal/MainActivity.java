@@ -1,15 +1,20 @@
 package com.example.dailyjournal;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.TreeSet;
+
 public class MainActivity extends AppCompatActivity {
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         DatabaseHelper databaseHelper = new DatabaseHelper(MainActivity.this);
         SQLiteDatabase database = openOrCreateDatabase("Entries.db",MODE_PRIVATE,null);
 
-
+        TreeSet dates = databaseHelper.getDates();
         configureButtons();
     }
 

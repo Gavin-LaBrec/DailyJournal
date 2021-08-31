@@ -55,9 +55,6 @@ public class ReviewEntry extends AppCompatActivity {
         TextView improveTextView = findViewById(R.id.improveTextMultiLine);
         TextView gratitudeTextView = findViewById(R.id.gratitudeTextMultiLine);
 
-        // ONLY GETS CURRENT DATE!!!
-        // MUST BE CHANGED TO LAST DATE OF ENTRIES!!!
-        //String date = DatabaseHelper.formatDate(LocalDateTime.now());
         DatabaseHelper databaseHelper = new DatabaseHelper(ReviewEntry.this);
         String date = databaseHelper.getRecentDate();
         dateTextView.setText(date);
