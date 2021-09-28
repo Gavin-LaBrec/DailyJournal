@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class ReviewEntry extends AppCompatActivity {
         try {
             configureText();
         } catch (Exception emptyDB) {
+            // Popup error if there are no entries
             startActivity(new Intent(ReviewEntry.this, EmptyEntryPop.class));
             finish();
         }
@@ -50,26 +52,10 @@ public class ReviewEntry extends AppCompatActivity {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void configureText() throws Exception {
-        // Set up TextViews
-        TextView dateTextView = findViewById(R.id.dateTextView);
-        TextView improveTextView = findViewById(R.id.improveTextMultiLine);
-        TextView gratitudeTextView = findViewById(R.id.gratitudeTextMultiLine);
-
         DatabaseHelper databaseHelper = new DatabaseHelper(ReviewEntry.this);
         String date = databaseHelper.getRecentDate();
         String formattedDate = databaseHelper.getDateText(date);
-        dateTextView.setText(formattedDate);
-
-        try {
-            Entry lastEntry = databaseHelper.getEntry(date);
-            String lastImprove = lastEntry.getImproveText();
-            String lastGratitude = lastEntry.getGratitudeText();
-
-            improveTextView.setText(lastImprove);
-            gratitudeTextView.setText(lastGratitude);
-        } catch (Exception emptyDB) {
-            throw new Exception();
-        }
+        updateText(date);
     }
 
     /**
@@ -83,5 +69,69 @@ public class ReviewEntry extends AppCompatActivity {
                 finish();
             }
         });
+
+        ImageButton olderButton = (ImageButton) findViewById(R.id.olderButton);
+        olderButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                TextView dateTextView = findViewById(R.id.dateTextView);
+
+                // Get older date
+                DatabaseHelper databaseHelper = new DatabaseHelper(ReviewEntry.this);
+                String selectedDate = (String) dateTextView.getText();
+                String olderDateString = databaseHelper.getNextDate(selectedDate, "older");
+                try {
+                    updateText(olderDateString);
+                } catch (Exception e) {
+                    // May want to handle moving from oldest entry better
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        ImageButton newerButton = (ImageButton) findViewById(R.id.newerButton);
+        newerButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                TextView dateTextView = findViewById(R.id.dateTextView);
+
+                // Get newer date
+                DatabaseHelper databaseHelper = new DatabaseHelper(ReviewEntry.this);
+                String selectedDate = (String) dateTextView.getText();
+                String olderDateString = databaseHelper.getNextDate(selectedDate, "newer");
+                try {
+                    updateText(olderDateString);
+                } catch (Exception e) {
+                    // May want to handle moving from oldest entry better
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Updates the text displayed based on the given date
+     *
+     * @param dateString string to look up to find next date
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void updateText(String dateString) throws Exception {
+        // Set up TextViews
+        TextView dateTextView = findViewById(R.id.dateTextView);
+        TextView improveTextView = findViewById(R.id.improveTextMultiLine);
+        TextView gratitudeTextView = findViewById(R.id.gratitudeTextMultiLine);
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(ReviewEntry.this);
+        Entry olderDate = databaseHelper.getEntry(dateString);
+
+        // Update display text
+        String improve = olderDate.getImproveText();
+        String gratitude = olderDate.getGratitudeText();
+
+        improveTextView.setText(improve);
+        gratitudeTextView.setText(gratitude);
+        dateTextView.setText(dateString);
     }
 }

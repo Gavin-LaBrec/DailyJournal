@@ -138,6 +138,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Gets the closest newer or older date to the given one
+     *
+     * @param selectedDate currently selected date
+     * @param direction input "newer" to get more recent date and "older" to get older date
+     *                  defaults to newer
+     *
+     * @return next closest date in direction in ready to display format
+     */
+    public String getNextDate(String selectedDate, String direction) {
+        // Determine if getting newer or older date
+        int indexChange;
+        if (direction == "older") {
+            indexChange = -1;
+        } else {
+            indexChange = 1;
+        }
+
+        String formattedDate = selectedDate;
+        String queryStringSelected = "SELECT ID FROM "
+                + ENTRIES_TABLE + " WHERE DATE_CREATED='" + selectedDate + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursorSelected = db.rawQuery(queryStringSelected, null);
+        cursorSelected.moveToFirst();
+        int recentDateIndex = cursorSelected.getInt(0) + indexChange;
+        String queryStringWanted = "SELECT " + COLUMN_DATE_CREATED + " FROM "
+                + ENTRIES_TABLE + " WHERE ID='" + recentDateIndex + "'";
+        Cursor cursor = db.rawQuery(queryStringWanted, null);
+        cursor.moveToFirst();
+        String olderDate = cursor.getString(0);
+        return olderDate;
+    }
+
+    /**
      * Gets the databases containing the entries
      *
      * @return the database
@@ -176,7 +209,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Formats the given date to match the database
+     * Formats the given date object to match the database
      *
      * @param date date to format
      *
@@ -194,6 +227,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Checks and formats any duplicate dates into ones to display
      *
+     * @param date date to format
+     *
      * @return date in ready to display format
      */
     public String getDateText(String date) {
@@ -206,5 +241,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return formattedDate;
     }
+
     private TreeSet<String> dates;
 }
